@@ -1,0 +1,33 @@
+import pandas as pd
+
+# Veriyi yükle
+data = pd.read_csv('train.csv')
+
+# İlk beş satırı göster
+print(data.head())
+
+# Eksik değer kontrolü
+print(data.isnull().sum())
+
+# Eksik değer içeren satırları sil
+data = data.dropna()
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+# Bağımsız değişkenler ve bağımlı değişkeni ayır
+X = data.drop('x', axis=1)  # target_column_name, bağımlı değişkenin adını temsil eder
+y = data['target']
+
+# Veriyi eğitim ve test setlerine ayır
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Lineer Regresyon modelini oluştur ve eğit
+model = LinearRegression()
+model.fit(X_train, y_train)
+import pickle
+
+# Modeli kaydet
+with open('linear_regression_model.pkl', 'wb') as file:
+    pickle.dump(model, file)
+
+
